@@ -3,15 +3,13 @@
 import {
   IconBone,
   IconCamera,
-  IconChartBar,
   IconDashboard,
   IconDatabase,
+  IconDog,
   IconFileAi,
   IconFileDescription,
   IconFileWord,
-  IconFolder,
   IconHelp,
-  IconListDetails,
   IconReport,
   IconSearch,
   IconSettings,
@@ -19,7 +17,6 @@ import {
 } from '@tabler/icons-react';
 import type * as React from 'react';
 
-import {NavDocuments} from '@/components/nav-documents';
 import {NavMain} from '@/components/nav-main';
 import {NavSecondary} from '@/components/nav-secondary';
 import {NavUser} from '@/components/nav-user';
@@ -42,27 +39,17 @@ const data = {
   navMain: [
     {
       title: 'Dashboard',
-      url: '#',
+      url: '/',
       icon: IconDashboard,
     },
     {
-      title: 'Lifecycle',
-      url: '#',
-      icon: IconListDetails,
+      title: 'Dogs',
+      url: '/dogs',
+      icon: IconDog,
     },
     {
-      title: 'Analytics',
-      url: '#',
-      icon: IconChartBar,
-    },
-    {
-      title: 'Projects',
-      url: '#',
-      icon: IconFolder,
-    },
-    {
-      title: 'Team',
-      url: '#',
+      title: 'Customers',
+      url: '/customers',
       icon: IconUsers,
     },
   ],
@@ -170,7 +157,6 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

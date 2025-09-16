@@ -1,7 +1,7 @@
 'use client';
 
 import {type Icon, IconCirclePlusFilled, IconMail} from '@tabler/icons-react';
-
+import {useNavigate} from '@tanstack/react-router';
 import {Button} from '@/components/ui/button';
 import {
   SidebarGroup,
@@ -20,6 +20,8 @@ export function NavMain({
     icon?: Icon;
   }[];
 }) {
+  const navigate = useNavigate();
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -45,7 +47,10 @@ export function NavMain({
         <SidebarMenu>
           {items.map(item => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
+              <SidebarMenuButton
+                onClick={() => navigate({to: item.url})}
+                tooltip={item.title}
+              >
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>
               </SidebarMenuButton>

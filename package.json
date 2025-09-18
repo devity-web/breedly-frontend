@@ -18,15 +18,19 @@
     "@radix-ui/react-tooltip": "1.2.8",
     "@tabler/icons-react": "3.34.1",
     "@tailwindcss/vite": "4.1.13",
+    "@tanstack/react-query": "^5.89.0",
     "@tanstack/react-router": "1.131.44",
     "@tanstack/react-router-devtools": "1.131.44",
+    "@ts-rest/core": "^3.52.1",
+    "@ts-rest/react-query": "^3.52.1",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "lucide-react": "0.544.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "tailwind-merge": "3.3.1",
-    "tailwindcss": "4.1.13"
+    "tailwindcss": "4.1.13",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.4",

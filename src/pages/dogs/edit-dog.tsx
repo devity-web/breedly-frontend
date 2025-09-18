@@ -1,8 +1,10 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import {IconArrowLeft, IconTrash} from '@tabler/icons-react';
 import {useNavigate} from '@tanstack/react-router';
+import {format} from 'date-fns';
 import {useForm} from 'react-hook-form';
 import z from 'zod';
+import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent} from '@/components/ui/card';
 import {
@@ -44,6 +46,10 @@ export const EditDog = ({dogId}: {dogId: string}) => {
     console.log(values);
   };
 
+  if (!data) {
+    return null;
+  }
+
   return (
     <div className="container max-w-6xl mx-auto flex flex-col gap-4">
       <div className="flex justify-between items-center">
@@ -61,13 +67,9 @@ export const EditDog = ({dogId}: {dogId: string}) => {
           </h2>
         </div>
 
-        {/* <div className="flex items-center gap-1">
-          <Button variant="destructive">
-            <IconTrash />
-            Delete
-          </Button>
-          <Button>Save Changes</Button>
-        </div> */}
+        <Badge variant="secondary" className="h-full">
+          {format(data.body.bornAt, 'dd/MM/yyyy HH:mm')}
+        </Badge>
       </div>
 
       <Card>
@@ -128,7 +130,12 @@ export const EditDog = ({dogId}: {dogId: string}) => {
                 />
               </div>
 
-              <Button type="submit">Submit</Button>
+              <div className="flex gap-2">
+                <Button type="button" variant="secondary">
+                  Discard
+                </Button>
+                <Button type="submit">Save changes</Button>
+              </div>
             </form>
           </Form>
         </CardContent>

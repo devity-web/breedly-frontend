@@ -9,55 +9,58 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as DogsRouteImport } from './routes/dogs'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DogsIndexRouteImport } from './routes/dogs/index'
+import { Route as DogsDogIdRouteImport } from './routes/dogs/$dogId'
 
-const DogsRoute = DogsRouteImport.update({
-  id: '/dogs',
-  path: '/dogs',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DogsIndexRoute = DogsIndexRouteImport.update({
+  id: '/dogs/',
+  path: '/dogs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DogsDogIdRoute = DogsDogIdRouteImport.update({
+  id: '/dogs/$dogId',
+  path: '/dogs/$dogId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dogs': typeof DogsRoute
+  '/dogs/$dogId': typeof DogsDogIdRoute
+  '/dogs': typeof DogsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dogs': typeof DogsRoute
+  '/dogs/$dogId': typeof DogsDogIdRoute
+  '/dogs': typeof DogsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/dogs': typeof DogsRoute
+  '/dogs/$dogId': typeof DogsDogIdRoute
+  '/dogs/': typeof DogsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dogs'
+  fullPaths: '/' | '/dogs/$dogId' | '/dogs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dogs'
-  id: '__root__' | '/' | '/dogs'
+  to: '/' | '/dogs/$dogId' | '/dogs'
+  id: '__root__' | '/' | '/dogs/$dogId' | '/dogs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DogsRoute: typeof DogsRoute
+  DogsDogIdRoute: typeof DogsDogIdRoute
+  DogsIndexRoute: typeof DogsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/dogs': {
-      id: '/dogs'
-      path: '/dogs'
-      fullPath: '/dogs'
-      preLoaderRoute: typeof DogsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -65,12 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dogs/': {
+      id: '/dogs/'
+      path: '/dogs'
+      fullPath: '/dogs'
+      preLoaderRoute: typeof DogsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dogs/$dogId': {
+      id: '/dogs/$dogId'
+      path: '/dogs/$dogId'
+      fullPath: '/dogs/$dogId'
+      preLoaderRoute: typeof DogsDogIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DogsRoute: DogsRoute,
+  DogsDogIdRoute: DogsDogIdRoute,
+  DogsIndexRoute: DogsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

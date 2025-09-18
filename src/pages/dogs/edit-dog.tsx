@@ -1,0 +1,138 @@
+import {zodResolver} from '@hookform/resolvers/zod';
+import {IconArrowLeft, IconTrash} from '@tabler/icons-react';
+import {useNavigate} from '@tanstack/react-router';
+import {useForm} from 'react-hook-form';
+import z from 'zod';
+import {Button} from '@/components/ui/button';
+import {Card, CardContent} from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import {Input} from '@/components/ui/input';
+import {dogsClient} from '@/server/dogs/dogs.client';
+
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: 'Name must be at least 2 characters.',
+  }),
+  assignedName: z.string().optional(),
+  passport: z.string().optional(),
+  chipId: z.string().optional(),
+});
+
+export const EditDog = ({dogId}: {dogId: string}) => {
+  const {data} = dogsClient.getDogById.useQuery(['dogs', dogId], {
+    params: {id: dogId},
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+    },
+  });
+
+  const navigate = useNavigate();
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    console.log(values);
+  };
+
+  return (
+    <div className="container max-w-6xl mx-auto flex flex-col gap-4">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-4">
+          <Button
+            onClick={() => navigate({to: '/dogs'})}
+            variant="outline"
+            size="icon"
+          >
+            <IconArrowLeft />
+          </Button>
+
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">
+            {data?.body.name}
+          </h2>
+        </div>
+
+        {/* <div className="flex items-center gap-1">
+          <Button variant="destructive">
+            <IconTrash />
+            Delete
+          </Button>
+          <Button>Save Changes</Button>
+        </div> */}
+      </div>
+
+      <Card>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <div className="grid grid-cols-2 gap-2 items-start">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel className="text-right">Name</FormLabel>
+                      <Input placeholder="Romeu Santiago" {...field} />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="assignedName"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel className="text-right">
+                        Assigned Name
+                      </FormLabel>
+                      <Input placeholder="Dom" {...field} />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 items-start">
+                <FormField
+                  control={form.control}
+                  name="passport"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel className="text-right">Passport</FormLabel>
+                      <Input placeholder="AB123456" {...field} />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="chipId"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormLabel className="text-right">Chip ID</FormLabel>
+                      <Input placeholder="123456789" {...field} />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <Button type="submit">Submit</Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};

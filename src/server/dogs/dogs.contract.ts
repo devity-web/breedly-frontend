@@ -4,6 +4,12 @@ import {customerSchema} from '../customers/customers.contract';
 
 const c = initContract();
 
+export const weightSchema = z.object({
+  id: z.string().uuid(),
+  value: z.number().min(0),
+  createdAt: z.date(),
+});
+
 export const dogSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
@@ -13,6 +19,7 @@ export const dogSchema = z.object({
   photo: z.string().optional(),
   bornAt: z.date(),
   owner: customerSchema.optional(),
+  weights: z.array(weightSchema),
 });
 
 export const dogsContract = c.router({
@@ -28,6 +35,16 @@ export const dogsContract = c.router({
     path: '/:id',
     responses: {
       200: dogSchema,
+    },
+  },
+  addWeight: {
+    method: 'POST',
+    path: '/:id/weight',
+    body: z.object({
+      value: z.number().min(0),
+    }),
+    responses: {
+      201: dogSchema,
     },
   },
 });

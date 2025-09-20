@@ -3,6 +3,7 @@ import {TanStackRouterDevtools} from '@tanstack/react-router-devtools';
 import {AppSidebar} from '@/components/app-sidebar';
 import {SiteHeader} from '@/components/site-header';
 import {SidebarInset, SidebarProvider} from '@/components/ui/sidebar';
+import {Toaster} from '@/components/ui/sonner';
 
 const RootLayout = () => {
   return (
@@ -21,6 +22,7 @@ const RootLayout = () => {
           <div className="@container/main flex flex-1 flex-col gap-2 p-4">
             <Outlet />
             <TanStackRouterDevtools position="bottom-right" />
+            <Toaster />
           </div>
         </div>
       </SidebarInset>

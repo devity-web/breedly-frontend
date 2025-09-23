@@ -2,6 +2,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {IconWeight} from '@tabler/icons-react';
 import {useQueryClient} from '@tanstack/react-query';
 import {format} from 'date-fns';
+import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
 import z from 'zod';
@@ -51,6 +52,8 @@ const formSchema = z.object({
 });
 
 export function WeightCard({weights, dogId}: WeightCardProps) {
+  const [open, setOpen] = useState(false);
+
   const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,6 +66,7 @@ export function WeightCard({weights, dogId}: WeightCardProps) {
     onSuccess: () => {
       toast('Weight added successfully');
       queryClient.invalidateQueries({queryKey: ['dogs', dogId]});
+      setOpen(false);
       form.reset();
     },
   });
@@ -78,7 +82,7 @@ export function WeightCard({weights, dogId}: WeightCardProps) {
           <IconWeight /> Weights
         </CardTitle>
 
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button variant="outline">Add weight</Button>
           </DialogTrigger>
@@ -137,7 +141,7 @@ export function WeightCard({weights, dogId}: WeightCardProps) {
                 <TableCell className="font-medium">
                   {weight.id.substring(0, 8)}
                 </TableCell>
-                <TableCell>{weight.value}</TableCell>
+                <TableCell>{weight.value.toFixed(2)}</TableCell>
                 <TableCell>
                   {format(weight.createdAt, 'dd/MM/yyyy HH:mm')}
                 </TableCell>

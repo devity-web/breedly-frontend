@@ -1,8 +1,10 @@
 import {zodResolver} from '@hookform/resolvers/zod';
-import {IconArrowLeft, IconFileDescription, IconPoo} from '@tabler/icons-react';
+import {IconArrowLeft, IconEPassport, IconPoo} from '@tabler/icons-react';
 import {useNavigate} from '@tanstack/react-router';
 import {format} from 'date-fns';
+import {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
+import {toast} from 'sonner';
 import z from 'zod';
 import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
@@ -24,6 +26,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import {dogsClient} from '@/server/dogs/dogs.client';
+import {replaceNulls} from '@/utils/replace-nulls';
 import {WeightCard} from './weight-card';
 
 const formSchema = z.object({
@@ -40,6 +43,12 @@ export const EditDog = ({dogId}: {dogId: string}) => {
     params: {id: dogId},
   });
 
+  const {mutate, isPending} = dogsClient.updateDog.useMutation({
+    onSuccess: () => {
+      toast('Dog updated successfully');
+    },
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,7 +60,14 @@ export const EditDog = ({dogId}: {dogId: string}) => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
+    mutate({params: {id: dogId}, body: values});
   };
+
+  useEffect(() => {
+    if (data) {
+      form.reset(replaceNulls(data.body));
+    }
+  }, [form, data]);
 
   if (!data) {
     return null;
@@ -82,7 +98,7 @@ export const EditDog = ({dogId}: {dogId: string}) => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-1">
-            <IconFileDescription /> Details
+            <IconEPassport /> Identity
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -146,7 +162,7 @@ export const EditDog = ({dogId}: {dogId: string}) => {
                 <Button type="button" variant="secondary">
                   Discard
                 </Button>
-                <Button type="submit">
+                <Button type="submit" isLoading={isPending}>
                   Save changes
                 </Button>
               </div>

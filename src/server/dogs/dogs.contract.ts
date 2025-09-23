@@ -47,4 +47,17 @@ export const dogsContract = c.router({
       201: dogSchema,
     },
   },
+  updateDog: {
+    method: 'PATCH',
+    body: z.object({
+      name: z.string().optional(),
+      assignedName: z.string().optional(),
+      passport: z.string().optional(),
+      chipId: z.string().optional(),
+    }),
+    path: '/:id',
+    responses: {
+      200: dogSchema,
+    },
+  },
 });

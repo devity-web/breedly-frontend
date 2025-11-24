@@ -25,6 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 import {dogsClient} from '@/server/dogs/dogs.client';
 import {replaceNulls} from '@/utils/replace-nulls';
 import {WeightCard} from './weight-card';
@@ -45,7 +46,7 @@ export const EditDog = ({dogId}: {dogId: string}) => {
 
   const {mutate, isPending} = dogsClient.updateDog.useMutation({
     onSuccess: () => {
-      toast('Dog updated successfully');
+      toast('Identity successfully updated ✅');
     },
   });
 
@@ -74,7 +75,7 @@ export const EditDog = ({dogId}: {dogId: string}) => {
   }
 
   return (
-    <div className="container max-w-6xl mx-auto flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
           <Button
@@ -95,114 +96,130 @@ export const EditDog = ({dogId}: {dogId: string}) => {
         </Badge>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-1">
-            <IconEPassport /> Identity
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <div className="grid grid-cols-2 gap-2 items-start">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel className="text-right">Name</FormLabel>
-                      <Input placeholder="Romeu Santiago" {...field} />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+      <Tabs defaultValue="identity">
+        <TabsList>
+          <TabsTrigger value="identity">Identity</TabsTrigger>
+          <TabsTrigger value="weight">Weight</TabsTrigger>
+          <TabsTrigger value="poops">Poops</TabsTrigger>
+          <TabsTrigger value="health">Health</TabsTrigger>
+          <TabsTrigger value="photos">Photos</TabsTrigger>
+        </TabsList>
+        <TabsContent value="identity">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-1">
+                <IconEPassport /> Identity
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-8"
+                >
+                  <div className="grid grid-cols-2 gap-2 items-start">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({field}) => (
+                        <FormItem>
+                          <FormLabel className="text-right">Name</FormLabel>
+                          <Input placeholder="Romeu Santiago" {...field} />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="assignedName"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel className="text-right">
-                        Assigned Name
-                      </FormLabel>
-                      <Input placeholder="Dom" {...field} />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                    <FormField
+                      control={form.control}
+                      name="assignedName"
+                      render={({field}) => (
+                        <FormItem>
+                          <FormLabel className="text-right">
+                            Assigned Name
+                          </FormLabel>
+                          <Input placeholder="Dom" {...field} />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
-              <div className="grid grid-cols-2 gap-2 items-start">
-                <FormField
-                  control={form.control}
-                  name="passport"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel className="text-right">Passport</FormLabel>
-                      <Input placeholder="AB123456" {...field} />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <div className="grid grid-cols-2 gap-2 items-start">
+                    <FormField
+                      control={form.control}
+                      name="passport"
+                      render={({field}) => (
+                        <FormItem>
+                          <FormLabel className="text-right">Passport</FormLabel>
+                          <Input placeholder="AB123456" {...field} />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="chipId"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel className="text-right">Chip ID</FormLabel>
-                      <Input placeholder="123456789" {...field} />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                    <FormField
+                      control={form.control}
+                      name="chipId"
+                      render={({field}) => (
+                        <FormItem>
+                          <FormLabel className="text-right">Chip ID</FormLabel>
+                          <Input placeholder="123456789" {...field} />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
-              <div className="flex gap-2">
-                <Button type="button" variant="secondary">
-                  Discard
-                </Button>
-                <Button type="submit" isLoading={isPending}>
-                  Save changes
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-
-      <WeightCard dogId={data.body.id} weights={data.body.weights} />
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-1">
-            <IconPoo /> Poops
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>#</TableHead>
-                <TableHead>Date</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data?.body.weights.map(weight => (
-                <TableRow key={weight.id}>
-                  <TableCell className="font-medium">
-                    {weight.id.substring(0, 8)}
-                  </TableCell>
-                  <TableCell>{weight.value}</TableCell>
-                  <TableCell>
-                    {format(weight.createdAt, 'dd/MM/yyyy HH:mm')}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+                  <div className="flex gap-2">
+                    <Button type="button" variant="secondary">
+                      Discard
+                    </Button>
+                    <Button type="submit" isLoading={isPending}>
+                      Save changes
+                    </Button>
+                  </div>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="weight">
+          <WeightCard dogId={data.body.id} weights={data.body.weights} />
+        </TabsContent>
+        <TabsContent value="poops">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-1">
+                <IconPoo /> Poops
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>#</TableHead>
+                    <TableHead>Date</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {data?.body.weights.map(weight => (
+                    <TableRow key={weight.id}>
+                      <TableCell className="font-medium">
+                        {weight.id.substring(0, 8)}
+                      </TableCell>
+                      <TableCell>{weight.value}</TableCell>
+                      <TableCell>
+                        {format(weight.createdAt, 'dd/MM/yyyy HH:mm')}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

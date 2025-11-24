@@ -1,6 +1,6 @@
 import {IconCirclePlus} from '@tabler/icons-react';
 import {useNavigate} from '@tanstack/react-router';
-import {formatDistanceToNow} from 'date-fns';
+import {format} from 'date-fns';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent} from '@/components/ui/card';
 import {Input} from '@/components/ui/input';
@@ -25,7 +25,7 @@ export const Dogs = () => {
         <Input className="w-64" placeholder="Search for dogs" />
         <Button>
           <IconCirclePlus />
-          Create Dog
+          Add dog
         </Button>
       </div>
       <Card>
@@ -57,7 +57,7 @@ export const Dogs = () => {
                   <TableCell>{dog.passport ?? '-'}</TableCell>
                   <TableCell>{dog.owner?.name ?? '-'}</TableCell>
                   <TableCell>
-                    {formatDistanceToNow(dog.bornAt, {addSuffix: true})}
+                    {format(dog.bornAt, 'dd/MM/yyyy HH:mm')}
                   </TableCell>
                 </TableRow>
               ))}

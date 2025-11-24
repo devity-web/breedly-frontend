@@ -64,7 +64,7 @@ export function WeightCard({weights, dogId}: WeightCardProps) {
 
   const {mutate, isPending} = dogsClient.addWeight.useMutation({
     onSuccess: () => {
-      toast('Weight added successfully');
+      toast('Weight successfully addded ✅');
       queryClient.invalidateQueries({queryKey: ['dogs', dogId]});
       setOpen(false);
       form.reset();
@@ -102,8 +102,8 @@ export function WeightCard({weights, dogId}: WeightCardProps) {
                       name="value"
                       render={({field}) => (
                         <FormItem>
-                          <FormLabel>Weight</FormLabel>
-                          <Input {...field} />
+                          <FormLabel>Weight (g)</FormLabel>
+                          <Input placeholder="256g" {...field} />
                           <FormMessage />
                         </FormItem>
                       )}
@@ -131,7 +131,7 @@ export function WeightCard({weights, dogId}: WeightCardProps) {
           <TableHeader>
             <TableRow>
               <TableHead>#</TableHead>
-              <TableHead>Value</TableHead>
+              <TableHead>Value (g)</TableHead>
               <TableHead>Date</TableHead>
             </TableRow>
           </TableHeader>
@@ -141,7 +141,7 @@ export function WeightCard({weights, dogId}: WeightCardProps) {
                 <TableCell className="font-medium">
                   {weight.id.substring(0, 8)}
                 </TableCell>
-                <TableCell>{weight.value.toFixed(2)}</TableCell>
+                <TableCell>{weight.value} g</TableCell>
                 <TableCell>
                   {format(weight.createdAt, 'dd/MM/yyyy HH:mm')}
                 </TableCell>

@@ -1,7 +1,10 @@
 import {useNavigate} from '@tanstack/react-router';
 import {format} from 'date-fns';
+import TableSkeleton from '@/components/table-skeleton';
 import {Card, CardContent} from '@/components/ui/card';
 import {Input} from '@/components/ui/input';
+import {Skeleton} from '@/components/ui/skeleton';
+import {Spinner} from '@/components/ui/spinner';
 import {
   Table,
   TableBody,
@@ -11,10 +14,12 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import {dogsClient, dogsKeys} from '@/server/dogs/dogs.client';
-import { AddDog } from './add-dog';
+import {AddDog} from './add-dog';
 
 export const Dogs = () => {
-  const {data} = dogsClient.getDogs.useQuery(dogsKeys.getAll.queryKey);
+  const {data, isLoading} = dogsClient.getDogs.useQuery(
+    dogsKeys.getAll.queryKey,
+  );
 
   const navigate = useNavigate();
 
@@ -39,6 +44,7 @@ export const Dogs = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
+              {isLoading && <TableSkeleton colSpan={7} rows={4} />}
               {data?.body.map(dog => (
                 <TableRow
                   key={dog.id}
@@ -52,9 +58,7 @@ export const Dogs = () => {
                   <TableCell>{dog.chipId ?? '-'}</TableCell>
                   <TableCell>{dog.passport ?? '-'}</TableCell>
                   <TableCell>{dog.owner?.name ?? '-'}</TableCell>
-                  <TableCell>
-                    {format(dog.bornAt, 'dd/MM/yyyy')}
-                  </TableCell>
+                  <TableCell>{format(dog.bornAt, 'dd/MM/yyyy')}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

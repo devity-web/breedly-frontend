@@ -17,6 +17,11 @@ export const weightSchema = z.object({
   createdAt: z.date(),
 });
 
+export const poopSchema = z.object({
+  id: z.string().uuid(),
+  createdAt: z.date(),
+});
+
 export const dogSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
@@ -27,4 +32,5 @@ export const dogSchema = z.object({
   bornAt: z.string().date(),
   owner: customerSchema.optional(),
   weights: z.array(weightSchema),
+  poops: z.array(poopSchema),
 });

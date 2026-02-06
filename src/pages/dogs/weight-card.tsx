@@ -1,5 +1,5 @@
 import {zodResolver} from '@hookform/resolvers/zod';
-import {IconWeight} from '@tabler/icons-react';
+import {IconPlus, IconWeight} from '@tabler/icons-react';
 import {useQueryClient} from '@tanstack/react-query';
 import {format} from 'date-fns';
 import {useState} from 'react';
@@ -86,7 +86,10 @@ export function WeightCard({weights, dogId}: WeightCardProps) {
 
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline">Add weight</Button>
+            <Button variant="outline">
+              <IconPlus />
+              Add weight
+            </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <Form {...form}>

@@ -29,6 +29,14 @@ export const dogsContract = c.router({
       201: dogSchema,
     },
   },
+  addPoop: {
+    method: 'POST',
+    path: '/:id/poop',
+    body: null,
+    responses: {
+      201: dogSchema,
+    },
+  },
   createDog: {
     method: 'POST',
     path: '/',

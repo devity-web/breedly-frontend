@@ -1,5 +1,5 @@
 import {zodResolver} from '@hookform/resolvers/zod';
-import {IconArrowLeft, IconEPassport, IconPoo} from '@tabler/icons-react';
+import {IconArrowLeft, IconEPassport} from '@tabler/icons-react';
 import {useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
 import {format} from 'date-fns';
@@ -19,18 +19,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 import {dogsClient, dogsKeys} from '@/server/dogs/dogs.client';
 import {dogFormSchema} from '@/server/dogs/dogs.schemas';
 import {replaceNulls} from '@/utils/replace-nulls';
+import {PoopCard} from './poop-card';
 import {WeightCard} from './weight-card';
 
 export const EditDog = ({dogId}: {dogId: string}) => {
@@ -87,7 +80,8 @@ export const EditDog = ({dogId}: {dogId: string}) => {
           </Button>
 
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">
-            {data?.body.name} <span className="text-2xl">({data?.body.assignedName})</span>
+            {data?.body.name}{' '}
+            <span className="text-2xl">({data?.body.assignedName})</span>
           </h2>
         </div>
 
@@ -196,36 +190,7 @@ export const EditDog = ({dogId}: {dogId: string}) => {
           )}
         </TabsContent>
         <TabsContent value="poops">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-1">
-                <IconPoo /> Poops
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>#</TableHead>
-                    <TableHead>Date</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {data?.body.weights.map(weight => (
-                    <TableRow key={weight.id}>
-                      <TableCell className="font-medium">
-                        {weight.id.substring(0, 8)}
-                      </TableCell>
-                      <TableCell>{weight.value}</TableCell>
-                      <TableCell>
-                        {format(weight.createdAt, 'dd/MM/yyyy HH:mm')}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+          {data && <PoopCard dogId={data.body.id} poops={data.body.poops} />}
         </TabsContent>
       </Tabs>
     </div>

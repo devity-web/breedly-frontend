@@ -72,15 +72,9 @@ export const EditDog = ({dogId}: {dogId: string}) => {
     }
   }, [form, data]);
 
-  if (!data) {
-    return null;
-  }
-
-  if (isLoading) {
-    return <DogSkeleton />;
-  }
-
-  return (
+  return isLoading ? (
+    <DogSkeleton />
+  ) : (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
@@ -98,7 +92,7 @@ export const EditDog = ({dogId}: {dogId: string}) => {
         </div>
 
         <Badge variant="secondary" className="h-full">
-          {format(data.body.bornAt, 'dd/MM/yyyy HH:mm')}
+          {data && format(data.body.bornAt, 'dd/MM/yyyy HH:mm')}
         </Badge>
       </div>
 
@@ -181,7 +175,9 @@ export const EditDog = ({dogId}: {dogId: string}) => {
                     <Button
                       type="button"
                       variant="secondary"
-                      onClick={() => form.reset(replaceNulls(data.body))}
+                      onClick={() =>
+                        data && form.reset(replaceNulls(data.body))
+                      }
                     >
                       Discard
                     </Button>
@@ -195,7 +191,9 @@ export const EditDog = ({dogId}: {dogId: string}) => {
           </Card>
         </TabsContent>
         <TabsContent value="weight">
-          <WeightCard dogId={data.body.id} weights={data.body.weights} />
+          {data && (
+            <WeightCard dogId={data.body.id} weights={data.body.weights} />
+          )}
         </TabsContent>
         <TabsContent value="poops">
           <Card>

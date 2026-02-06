@@ -7,6 +7,7 @@ import {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
 import type z from 'zod';
+import DogSkeleton from '@/components/dog-skeleton';
 import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
@@ -35,7 +36,7 @@ import {WeightCard} from './weight-card';
 export const EditDog = ({dogId}: {dogId: string}) => {
   const queryClient = useQueryClient();
 
-  const {data} = dogsClient.getDogById.useQuery(
+  const {data, isLoading} = dogsClient.getDogById.useQuery(
     dogsKeys.getById(dogId).queryKey,
     {
       params: {id: dogId},
@@ -73,6 +74,10 @@ export const EditDog = ({dogId}: {dogId: string}) => {
 
   if (!data) {
     return null;
+  }
+
+  if (isLoading) {
+    return <DogSkeleton />;
   }
 
   return (

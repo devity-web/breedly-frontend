@@ -3,8 +3,6 @@ import {format} from 'date-fns';
 import TableSkeleton from '@/components/table-skeleton';
 import {Card, CardContent} from '@/components/ui/card';
 import {Input} from '@/components/ui/input';
-import {Skeleton} from '@/components/ui/skeleton';
-import {Spinner} from '@/components/ui/spinner';
 import {
   Table,
   TableBody,

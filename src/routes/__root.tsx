@@ -19,7 +19,7 @@ const RootLayout = () => {
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">
-          <div className="container max-w-6xl py-4 mx-auto">
+          <div className="container max-w-6xl p-4 mx-auto">
             <Outlet />
             <TanStackRouterDevtools position="bottom-right" />
             <Toaster />

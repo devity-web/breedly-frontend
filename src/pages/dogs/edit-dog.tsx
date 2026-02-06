@@ -87,7 +87,7 @@ export const EditDog = ({dogId}: {dogId: string}) => {
           </Button>
 
           <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">
-            {data?.body.name}
+            {data?.body.name} <span className="text-2xl">({data?.body.assignedName})</span>
           </h2>
         </div>
 

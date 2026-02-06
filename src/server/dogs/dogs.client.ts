@@ -1,9 +1,10 @@
 import {createQueryKeys} from '@lukemorales/query-key-factory';
 import {initQueryClient} from '@ts-rest/react-query';
+import {getBaseUrl} from '@/utils/get-base-url';
 import {dogsContract} from './dogs.contract';
 
 export const dogsClient = initQueryClient(dogsContract, {
-  baseUrl: 'http://localhost:3000/api/dogs',
+  baseUrl: `${getBaseUrl()}/dogs`,
   baseHeaders: {},
 });
 

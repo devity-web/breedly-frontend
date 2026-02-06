@@ -1,9 +1,10 @@
 import {createQueryKeys} from '@lukemorales/query-key-factory';
 import {initQueryClient} from '@ts-rest/react-query';
+import {getBaseUrl} from '@/utils/get-base-url';
 import {customersContract} from './customers.contract';
 
 export const customersClient = initQueryClient(customersContract, {
-  baseUrl: 'http://localhost:3000/api/customers',
+  baseUrl: `${getBaseUrl()}/customers`,
   baseHeaders: {},
 });
 

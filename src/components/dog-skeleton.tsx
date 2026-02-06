@@ -2,7 +2,7 @@ import {Skeleton} from '@/components/ui/skeleton';
 
 export default function DogSkeleton() {
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background">
       {/* Header: back arrow + name + date */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">

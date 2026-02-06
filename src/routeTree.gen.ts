@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DogsIndexRouteImport } from './routes/dogs/index'
+import { Route as CustomersIndexRouteImport } from './routes/customers/index'
 import { Route as DogsDogIdRouteImport } from './routes/dogs/$dogId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +24,11 @@ const DogsIndexRoute = DogsIndexRouteImport.update({
   path: '/dogs/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CustomersIndexRoute = CustomersIndexRouteImport.update({
+  id: '/customers/',
+  path: '/customers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DogsDogIdRoute = DogsDogIdRouteImport.update({
   id: '/dogs/$dogId',
   path: '/dogs/$dogId',
@@ -32,30 +38,34 @@ const DogsDogIdRoute = DogsDogIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dogs/$dogId': typeof DogsDogIdRoute
-  '/dogs': typeof DogsIndexRoute
+  '/customers/': typeof CustomersIndexRoute
+  '/dogs/': typeof DogsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dogs/$dogId': typeof DogsDogIdRoute
+  '/customers': typeof CustomersIndexRoute
   '/dogs': typeof DogsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dogs/$dogId': typeof DogsDogIdRoute
+  '/customers/': typeof CustomersIndexRoute
   '/dogs/': typeof DogsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dogs/$dogId' | '/dogs'
+  fullPaths: '/' | '/dogs/$dogId' | '/customers/' | '/dogs/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dogs/$dogId' | '/dogs'
-  id: '__root__' | '/' | '/dogs/$dogId' | '/dogs/'
+  to: '/' | '/dogs/$dogId' | '/customers' | '/dogs'
+  id: '__root__' | '/' | '/dogs/$dogId' | '/customers/' | '/dogs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DogsDogIdRoute: typeof DogsDogIdRoute
+  CustomersIndexRoute: typeof CustomersIndexRoute
   DogsIndexRoute: typeof DogsIndexRoute
 }
 
@@ -71,8 +81,15 @@ declare module '@tanstack/react-router' {
     '/dogs/': {
       id: '/dogs/'
       path: '/dogs'
-      fullPath: '/dogs'
+      fullPath: '/dogs/'
       preLoaderRoute: typeof DogsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/customers/': {
+      id: '/customers/'
+      path: '/customers'
+      fullPath: '/customers/'
+      preLoaderRoute: typeof CustomersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dogs/$dogId': {
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DogsDogIdRoute: DogsDogIdRoute,
+  CustomersIndexRoute: CustomersIndexRoute,
   DogsIndexRoute: DogsIndexRoute,
 }
 export const routeTree = rootRouteImport

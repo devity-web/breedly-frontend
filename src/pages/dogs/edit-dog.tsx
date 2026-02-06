@@ -1,11 +1,12 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import {IconArrowLeft, IconEPassport, IconPoo} from '@tabler/icons-react';
+import {useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from '@tanstack/react-router';
 import {format} from 'date-fns';
 import {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
-import z from 'zod';
+import type z from 'zod';
 import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
@@ -26,32 +27,32 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
-import {dogsClient} from '@/server/dogs/dogs.client';
+import {dogsClient, dogsKeys} from '@/server/dogs/dogs.client';
+import {dogFormSchema} from '@/server/dogs/dogs.schemas';
 import {replaceNulls} from '@/utils/replace-nulls';
 import {WeightCard} from './weight-card';
 
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: 'Name must be at least 2 characters.',
-  }),
-  assignedName: z.string().optional(),
-  passport: z.string().optional(),
-  chipId: z.string().optional(),
-});
-
 export const EditDog = ({dogId}: {dogId: string}) => {
-  const {data} = dogsClient.getDogById.useQuery(['dogs', dogId], {
-    params: {id: dogId},
-  });
+  const queryClient = useQueryClient();
+
+  const {data} = dogsClient.getDogById.useQuery(
+    dogsKeys.getById(dogId).queryKey,
+    {
+      params: {id: dogId},
+    },
+  );
 
   const {mutate, isPending} = dogsClient.updateDog.useMutation({
     onSuccess: () => {
       toast('Identity successfully updated ✅');
+      queryClient.invalidateQueries({
+        queryKey: dogsKeys.getById(dogId).queryKey,
+      });
     },
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof dogFormSchema>>({
+    resolver: zodResolver(dogFormSchema),
     defaultValues: {
       name: '',
     },
@@ -59,7 +60,7 @@ export const EditDog = ({dogId}: {dogId: string}) => {
 
   const navigate = useNavigate();
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof dogFormSchema>) => {
     console.log(values);
     mutate({params: {id: dogId}, body: values});
   };
@@ -172,7 +173,11 @@ export const EditDog = ({dogId}: {dogId: string}) => {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button type="button" variant="secondary">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={() => form.reset(replaceNulls(data.body))}
+                    >
                       Discard
                     </Button>
                     <Button type="submit" isLoading={isPending}>

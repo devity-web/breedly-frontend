@@ -1,7 +1,5 @@
-import {IconCirclePlus} from '@tabler/icons-react';
 import {useNavigate} from '@tanstack/react-router';
 import {format} from 'date-fns';
-import {Button} from '@/components/ui/button';
 import {Card, CardContent} from '@/components/ui/card';
 import {Input} from '@/components/ui/input';
 import {
@@ -12,10 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {dogsClient} from '@/server/dogs/dogs.client';
+import {dogsClient, dogsKeys} from '@/server/dogs/dogs.client';
+import { AddDog } from './add-dog';
 
 export const Dogs = () => {
-  const {data} = dogsClient.getDogs.useQuery(['dogs']);
+  const {data} = dogsClient.getDogs.useQuery(dogsKeys.getAll.queryKey);
 
   const navigate = useNavigate();
 
@@ -23,10 +22,7 @@ export const Dogs = () => {
     <div>
       <div className="flex items-center justify-between mb-4">
         <Input className="w-64" placeholder="Search for dogs" />
-        <Button>
-          <IconCirclePlus />
-          Add dog
-        </Button>
+        <AddDog />
       </div>
       <Card>
         <CardContent>
@@ -57,7 +53,7 @@ export const Dogs = () => {
                   <TableCell>{dog.passport ?? '-'}</TableCell>
                   <TableCell>{dog.owner?.name ?? '-'}</TableCell>
                   <TableCell>
-                    {format(dog.bornAt, 'dd/MM/yyyy HH:mm')}
+                    {format(dog.bornAt, 'dd/MM/yyyy')}
                   </TableCell>
                 </TableRow>
               ))}

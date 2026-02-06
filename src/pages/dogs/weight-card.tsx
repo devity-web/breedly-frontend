@@ -33,8 +33,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {dogsClient} from '@/server/dogs/dogs.client';
-import type {weightSchema} from '@/server/dogs/dogs.contract';
+import {dogsClient, dogsKeys} from '@/server/dogs/dogs.client';
+import type {weightSchema} from '@/server/dogs/dogs.schemas';
 
 interface WeightCardProps {
   weights: z.infer<typeof weightSchema>[];
@@ -65,7 +65,9 @@ export function WeightCard({weights, dogId}: WeightCardProps) {
   const {mutate, isPending} = dogsClient.addWeight.useMutation({
     onSuccess: () => {
       toast('Weight successfully addded ✅');
-      queryClient.invalidateQueries({queryKey: ['dogs', dogId]});
+      queryClient.invalidateQueries({
+        queryKey: dogsKeys.getById(dogId).queryKey,
+      });
       setOpen(false);
       form.reset();
     },

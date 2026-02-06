@@ -1,26 +1,8 @@
 import {initContract} from '@ts-rest/core';
 import {z} from 'zod';
-import {customerSchema} from '../customers/customers.contract';
+import {dogFormSchema, dogSchema} from './dogs.schemas';
 
 const c = initContract();
-
-export const weightSchema = z.object({
-  id: z.string().uuid(),
-  value: z.number().min(0),
-  createdAt: z.date(),
-});
-
-export const dogSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-  assignedName: z.string().optional(),
-  passport: z.string().optional(),
-  chipId: z.string().optional(),
-  photo: z.string().optional(),
-  bornAt: z.date(),
-  owner: customerSchema.optional(),
-  weights: z.array(weightSchema),
-});
 
 export const dogsContract = c.router({
   getDogs: {
@@ -47,14 +29,17 @@ export const dogsContract = c.router({
       201: dogSchema,
     },
   },
+  createDog: {
+    method: 'POST',
+    path: '/',
+    body: dogFormSchema,
+    responses: {
+      200: dogSchema,
+    },
+  },
   updateDog: {
     method: 'PATCH',
-    body: z.object({
-      name: z.string().optional(),
-      assignedName: z.string().optional(),
-      passport: z.string().optional(),
-      chipId: z.string().optional(),
-    }),
+    body: dogFormSchema,
     path: '/:id',
     responses: {
       200: dogSchema,

@@ -1,8 +1,19 @@
 /** biome-ignore-all lint/suspicious/noUnknownAtRules: third party */
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-inter: "Inter", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply font-inter;
+  }
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

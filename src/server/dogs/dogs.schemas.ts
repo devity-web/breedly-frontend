@@ -28,6 +28,12 @@ export const poopSchema = z.object({
   createdAt: z.date(),
 });
 
+export const photoSchema = z.object({
+  id: z.string().uuid(),
+  url: z.string().url(),
+  createdAt: z.date(),
+});
+
 export const dogSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
@@ -40,4 +46,5 @@ export const dogSchema = z.object({
   weights: z.array(weightSchema),
   poops: z.array(poopSchema),
   healths: z.array(healthSchema),
+  photos: z.array(photoSchema),
 });

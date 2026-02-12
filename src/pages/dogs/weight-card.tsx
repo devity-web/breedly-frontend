@@ -135,7 +135,6 @@ export function WeightCard({weights, dogId}: WeightCardProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>#</TableHead>
               <TableHead>Value (g)</TableHead>
               <TableHead>Date</TableHead>
             </TableRow>
@@ -143,9 +142,6 @@ export function WeightCard({weights, dogId}: WeightCardProps) {
           <TableBody>
             {weights.map(weight => (
               <TableRow key={weight.id}>
-                <TableCell className="font-medium">
-                  {weight.id.substring(0, 8)}
-                </TableCell>
                 <TableCell>{weight.value} g</TableCell>
                 <TableCell>
                   {format(weight.createdAt, 'dd/MM/yyyy HH:mm')}

@@ -47,6 +47,17 @@ export const dogsContract = c.router({
       201: dogSchema,
     },
   },
+  addPhoto: {
+    method: 'POST',
+    path: '/:id/photo',
+    body: z.object({
+      file: z.instanceof(File),
+    }),
+    contentType: 'multipart/form-data',
+    responses: {
+      201: dogSchema,
+    },
+  },
   createDog: {
     method: 'POST',
     path: '/',

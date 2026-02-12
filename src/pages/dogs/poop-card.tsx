@@ -49,7 +49,7 @@ export function PoopCard({poops, dogId}: PoopCardProps) {
           Add poop
         </Button>
       </CardHeader>
-      <CardContent>
+      <CardContent className="max-h-96 overflow-y-scroll">
         <Table>
           <TableHeader>
             <TableRow>
@@ -57,12 +57,10 @@ export function PoopCard({poops, dogId}: PoopCardProps) {
               <TableHead>Date</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {poops.map(poop => (
+          <TableBody className="max-h-2">
+            {poops.map((poop, key) => (
               <TableRow key={poop.id}>
-                <TableCell className="font-medium">
-                  {poop.id.substring(0, 8)}
-                </TableCell>
+                <TableCell className="font-medium">{poops.length - key}</TableCell>
                 <TableCell>
                   {format(poop.createdAt, 'dd/MM/yyyy HH:mm')}
                 </TableCell>

@@ -24,6 +24,7 @@ import {dogsClient, dogsKeys} from '@/server/dogs/dogs.client';
 import {dogFormSchema} from '@/server/dogs/dogs.schemas';
 import {replaceNulls} from '@/utils/replace-nulls';
 import {HealthCard} from './health-card';
+import PhotosCard from './photos-card';
 import {PoopCard} from './poop-card';
 import {WeightCard} from './weight-card';
 
@@ -196,6 +197,11 @@ export const EditDog = ({dogId}: {dogId: string}) => {
         <TabsContent value="health">
           {data && (
             <HealthCard dogId={data.body.id} healths={data.body.healths} />
+          )}
+        </TabsContent>
+        <TabsContent value="photos">
+          {data && (
+            <PhotosCard dogId={data.body.id} photos={data.body.photos} />
           )}
         </TabsContent>
       </Tabs>

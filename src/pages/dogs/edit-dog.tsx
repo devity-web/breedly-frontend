@@ -23,6 +23,7 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 import {dogsClient, dogsKeys} from '@/server/dogs/dogs.client';
 import {dogFormSchema} from '@/server/dogs/dogs.schemas';
 import {replaceNulls} from '@/utils/replace-nulls';
+import {HealthCard} from './health-card';
 import {PoopCard} from './poop-card';
 import {WeightCard} from './weight-card';
 
@@ -191,6 +192,11 @@ export const EditDog = ({dogId}: {dogId: string}) => {
         </TabsContent>
         <TabsContent value="poops">
           {data && <PoopCard dogId={data.body.id} poops={data.body.poops} />}
+        </TabsContent>
+        <TabsContent value="health">
+          {data && (
+            <HealthCard dogId={data.body.id} healths={data.body.healths} />
+          )}
         </TabsContent>
       </Tabs>
     </div>

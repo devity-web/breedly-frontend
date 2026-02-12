@@ -29,6 +29,16 @@ export const dogsContract = c.router({
       201: dogSchema,
     },
   },
+  addHealth: {
+    method: 'POST',
+    path: '/:id/health',
+    body: z.object({
+      description: z.string(),
+    }),
+    responses: {
+      201: dogSchema,
+    },
+  },
   addPoop: {
     method: 'POST',
     path: '/:id/poop',

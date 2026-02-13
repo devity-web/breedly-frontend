@@ -129,7 +129,6 @@ export function HealthCard({healths, dogId}: HealthCardProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>#</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>Date</TableHead>
             </TableRow>
@@ -137,9 +136,6 @@ export function HealthCard({healths, dogId}: HealthCardProps) {
           <TableBody>
             {healths.map(health => (
               <TableRow key={health.id}>
-                <TableCell className="font-medium">
-                  {health.id.substring(0, 8)}
-                </TableCell>
                 <TableCell>{health.description}</TableCell>
                 <TableCell>
                   {format(health.createdAt, 'dd/MM/yyyy HH:mm')}

@@ -19,10 +19,13 @@ export default function PhotosCard({photos, dogId}: PhotosCardProps) {
 
   const {mutate, isPending} = dogsClient.addPhoto.useMutation({
     onSuccess: () => {
-      toast('Photo successfully uploaded');
+      toast.success('Photo successfully uploaded');
       queryClient.invalidateQueries({
         queryKey: dogsKeys.getById(dogId).queryKey,
       });
+    },
+    onError: () => {
+      toast.error('Failed to upload photo');
     },
   });
 
@@ -42,13 +45,14 @@ export default function PhotosCard({photos, dogId}: PhotosCardProps) {
     <div className="grid grid-cols-3 gap-4">
       {photos.map(photo => (
         <Card
-          className="relative mx-auto w-full max-w-sm p-0 h-72 min-h-72"
+          className="relative mx-auto w-full max-w-sm p-0 h-72 min-h-72 cursor-pointer"
           key={photo.id}
+          onClick={() => window.open(photo.url, '_blank')}
         >
           <img
             src={photo.url}
             alt="Event cover"
-            className="rounded-2xl relative z-20 aspect-video w-full h-full object-cover"
+            className="rounded-2xl relative z-20 aspect-video w-full h-full object-cover hover:brightness-50 transition"
           />
         </Card>
       ))}

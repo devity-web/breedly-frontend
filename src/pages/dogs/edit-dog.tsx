@@ -88,7 +88,7 @@ export const EditDog = ({dogId}: {dogId: string}) => {
         </div>
 
         <Badge variant="secondary" className="h-full">
-          {data && format(data.body.bornAt, 'dd/MM/yyyy HH:mm')}
+          {data && format(data.body.bornAt, 'dd/MM/yyyy')}
         </Badge>
       </div>
 

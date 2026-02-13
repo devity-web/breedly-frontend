@@ -1,5 +1,6 @@
 import {useNavigate} from '@tanstack/react-router';
 import {format} from 'date-fns';
+import {PageName} from '@/components/page-name';
 import TableSkeleton from '@/components/table-skeleton';
 import {Card, CardContent} from '@/components/ui/card';
 import {Input} from '@/components/ui/input';
@@ -23,6 +24,7 @@ export const Dogs = () => {
 
   return (
     <div>
+      <PageName name="Dogs" />
       <div className="flex items-center justify-between mb-4">
         <Input className="w-64" placeholder="Search for dogs" />
         <AddDog />

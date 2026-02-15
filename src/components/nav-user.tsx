@@ -7,7 +7,6 @@ import {
   IconNotification,
   IconUserCircle,
 } from '@tabler/icons-react';
-import {Moon, Sun} from 'lucide-react';
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -24,8 +23,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import {useTheme} from './theme-provider';
-import {Button} from './ui/button';
 
 export function NavUser({
   user,

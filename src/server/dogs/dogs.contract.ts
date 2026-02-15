@@ -58,6 +58,14 @@ export const dogsContract = c.router({
       201: dogSchema,
     },
   },
+  deletePhoto: {
+    method: 'DELETE',
+    path: '/:id/photo/:photoId',
+    body: null,
+    responses: {
+      201: dogSchema,
+    },
+  },
   createDog: {
     method: 'POST',
     path: '/',

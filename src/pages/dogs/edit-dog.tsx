@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
+import {useUrlState} from '@/hooks/use-url-state';
 import {dogsClient, dogsKeys} from '@/server/dogs/dogs.client';
 import {dogFormSchema} from '@/server/dogs/dogs.schemas';
 import {replaceNulls} from '@/utils/replace-nulls';
@@ -30,6 +31,7 @@ import {WeightCard} from './weight-card';
 
 export const EditDog = ({dogId}: {dogId: string}) => {
   const queryClient = useQueryClient();
+  const [tab, setTab] = useUrlState('tab', 'identity');
 
   const {data, isLoading} = dogsClient.getDogById.useQuery(
     dogsKeys.getById(dogId).queryKey,
@@ -67,144 +69,143 @@ export const EditDog = ({dogId}: {dogId: string}) => {
     }
   }, [form, data]);
 
-  return isLoading ? (
-    <DogSkeleton />
-  ) : (
-    <div className="flex flex-col gap-4">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <Button
-            onClick={() => navigate({to: '/dogs'})}
-            variant="outline"
-            size="icon"
-          >
-            <IconArrowLeft />
-          </Button>
+  return (
+    <>
+      {isLoading && <DogSkeleton />}
+      {data && (
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              <Button
+                onClick={() => navigate({to: '/dogs'})}
+                variant="outline"
+                size="icon"
+              >
+                <IconArrowLeft />
+              </Button>
 
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">
-            {data?.body.name}{' '}
-            <span className="text-2xl">({data?.body.assignedName})</span>
-          </h2>
-        </div>
+              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">
+                {data?.body.name}{' '}
+                <span className="text-2xl">({data?.body.assignedName})</span>
+              </h2>
+            </div>
 
-        <Badge variant="secondary" className="h-full">
-          {data && format(data.body.bornAt, 'dd/MM/yyyy')}
-        </Badge>
-      </div>
+            <Badge variant="secondary" className="h-full">
+              {format(data.body.bornAt, 'dd/MM/yyyy')}
+            </Badge>
+          </div>
 
-      <Tabs defaultValue="identity">
-        <TabsList>
-          <TabsTrigger value="identity">Identity</TabsTrigger>
-          <TabsTrigger value="weight">Weight</TabsTrigger>
-          <TabsTrigger value="poops">Poops</TabsTrigger>
-          <TabsTrigger value="health">Health</TabsTrigger>
-          <TabsTrigger value="photos">Photos</TabsTrigger>
-        </TabsList>
-        <TabsContent value="identity">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-1">
-                <IconEPassport /> Identity
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-8"
-                >
-                  <div className="grid grid-cols-2 gap-2 items-start">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({field}) => (
-                        <FormItem>
-                          <FormLabel className="text-right">Name</FormLabel>
-                          <Input placeholder="Romeu Santiago" {...field} />
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="assignedName"
-                      render={({field}) => (
-                        <FormItem>
-                          <FormLabel className="text-right">
-                            Assigned Name
-                          </FormLabel>
-                          <Input placeholder="Dom" {...field} />
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2 items-start">
-                    <FormField
-                      control={form.control}
-                      name="passport"
-                      render={({field}) => (
-                        <FormItem>
-                          <FormLabel className="text-right">Passport</FormLabel>
-                          <Input placeholder="AB123456" {...field} />
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="chipId"
-                      render={({field}) => (
-                        <FormItem>
-                          <FormLabel className="text-right">Chip ID</FormLabel>
-                          <Input placeholder="123456789" {...field} />
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="flex gap-2">
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      onClick={() =>
-                        data && form.reset(replaceNulls(data.body))
-                      }
+          <Tabs value={tab ?? 'identity'} onValueChange={e => setTab(e)}>
+            <TabsList>
+              <TabsTrigger value="identity">Identity</TabsTrigger>
+              <TabsTrigger value="weight">Weight</TabsTrigger>
+              <TabsTrigger value="poops">Poops</TabsTrigger>
+              <TabsTrigger value="health">Health</TabsTrigger>
+              <TabsTrigger value="photos">Photos</TabsTrigger>
+            </TabsList>
+            <TabsContent value="identity">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-1">
+                    <IconEPassport /> Identity
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Form {...form}>
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="space-y-8"
                     >
-                      Discard
-                    </Button>
-                    <Button type="submit" isLoading={isPending}>
-                      Save changes
-                    </Button>
-                  </div>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        <TabsContent value="weight">
-          {data && (
-            <WeightCard dogId={data.body.id} weights={data.body.weights} />
-          )}
-        </TabsContent>
-        <TabsContent value="poops">
-          {data && <PoopCard dogId={data.body.id} poops={data.body.poops} />}
-        </TabsContent>
-        <TabsContent value="health">
-          {data && (
-            <HealthCard dogId={data.body.id} healths={data.body.healths} />
-          )}
-        </TabsContent>
-        <TabsContent value="photos">
-          {data && (
-            <PhotosCard dogId={data.body.id} photos={data.body.photos} />
-          )}
-        </TabsContent>
-      </Tabs>
-    </div>
+                      <div className="grid grid-cols-2 gap-2 items-start">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({field}) => (
+                            <FormItem>
+                              <FormLabel className="text-right">Name</FormLabel>
+                              <Input placeholder="Romeu Santiago" {...field} />
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="assignedName"
+                          render={({field}) => (
+                            <FormItem>
+                              <FormLabel className="text-right">
+                                Assigned Name
+                              </FormLabel>
+                              <Input placeholder="Dom" {...field} />
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2 items-start">
+                        <FormField
+                          control={form.control}
+                          name="passport"
+                          render={({field}) => (
+                            <FormItem>
+                              <FormLabel className="text-right">
+                                Passport
+                              </FormLabel>
+                              <Input placeholder="AB123456" {...field} />
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="chipId"
+                          render={({field}) => (
+                            <FormItem>
+                              <FormLabel className="text-right">
+                                Chip ID
+                              </FormLabel>
+                              <Input placeholder="123456789" {...field} />
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          onClick={() => form.reset(replaceNulls(data.body))}
+                        >
+                          Discard
+                        </Button>
+                        <Button type="submit" isLoading={isPending}>
+                          Save changes
+                        </Button>
+                      </div>
+                    </form>
+                  </Form>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="weight">
+              <WeightCard dogId={data.body.id} weights={data.body.weights} />
+            </TabsContent>
+            <TabsContent value="poops">
+              <PoopCard dogId={data.body.id} poops={data.body.poops} />
+            </TabsContent>
+            <TabsContent value="health">
+              <HealthCard dogId={data.body.id} healths={data.body.healths} />
+            </TabsContent>
+            <TabsContent value="photos">
+              <PhotosCard dogId={data.body.id} photos={data.body.photos} />
+            </TabsContent>
+          </Tabs>
+        </div>
+      )}
+    </>
   );
 };

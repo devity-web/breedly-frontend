@@ -17,23 +17,30 @@ function Index() {
     dashboardKeys.getStats,
   ]);
 
-  return isLoading ? (
-    <DashboardSkeleton />
-  ) : (
-    <div>
-      <PageName name="Dashboard" />
+  return (
+    <>
+      {isLoading && <DashboardSkeleton />}
       {data && (
-        <div className="grid grid-cols-4 gap-4">
-          <StatsCard title="Dogs" value={data.body.dogs} icon={IconDog} />
-          <StatsCard
-            title="Customers"
-            value={data.body.dogs}
-            icon={IconUsers}
-          />
-          <StatsCard title="Photos" value={data.body.dogs} icon={IconCamera} />
-          <StatsCard title="Poops" value={data.body.dogs} icon={IconPoo} />
+        <div>
+          <PageName name="Dashboard" />
+          {data && (
+            <div className="grid grid-cols-4 gap-4">
+              <StatsCard title="Dogs" value={data.body.dogs} icon={IconDog} />
+              <StatsCard
+                title="Customers"
+                value={data.body.dogs}
+                icon={IconUsers}
+              />
+              <StatsCard
+                title="Photos"
+                value={data.body.dogs}
+                icon={IconCamera}
+              />
+              <StatsCard title="Poops" value={data.body.dogs} icon={IconPoo} />
+            </div>
+          )}
         </div>
       )}
-    </div>
+    </>
   );
 }

@@ -3,7 +3,7 @@ import {Skeleton} from './ui/skeleton';
 
 export default function DashboardSkeleton() {
   return (
-    <main className="p-6 md:p-10">
+    <main>
       <Skeleton className="h-8 w-40" />
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {Array.from({length: 4}).map((_, i) => (

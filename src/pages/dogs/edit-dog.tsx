@@ -11,6 +11,7 @@ import DogSkeleton from '@/components/dog-skeleton';
 import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
+import {ColorPicker} from '@/components/ui/color-picker';
 import {
   Form,
   FormField,
@@ -65,6 +66,7 @@ export const EditDog = ({dogId}: {dogId: string}) => {
 
   useEffect(() => {
     if (data) {
+      console.log(data.body);
       form.reset(replaceNulls(data.body));
     }
   }, [form, data]);
@@ -84,9 +86,15 @@ export const EditDog = ({dogId}: {dogId: string}) => {
                 <IconArrowLeft />
               </Button>
 
-              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">
-                {data?.body.name}{' '}
-                <span className="text-2xl">({data?.body.assignedName})</span>
+              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight flex items-center gap-4">
+                <div>
+                  {data.body.name}{' '}
+                  <span className="text-2xl">({data.body.assignedName})</span>
+                </div>
+                <div
+                  className="h-6 w-6 rounded-full"
+                  style={{backgroundColor: data.body.color}}
+                ></div>
               </h2>
             </div>
 
@@ -116,6 +124,18 @@ export const EditDog = ({dogId}: {dogId: string}) => {
                       onSubmit={form.handleSubmit(onSubmit)}
                       className="space-y-8"
                     >
+                      <FormField
+                        control={form.control}
+                        name="color"
+                        render={({field}) => (
+                          <FormItem>
+                            <FormLabel className="text-right">Color</FormLabel>
+                            <ColorPicker color={field.value} {...field} />
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
                       <div className="grid grid-cols-2 gap-2 items-start">
                         <FormField
                           control={form.control}

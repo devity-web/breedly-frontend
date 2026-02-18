@@ -9,6 +9,7 @@ export const dogFormSchema = z.object({
   passport: z.string().optional(),
   chipId: z.string().optional(),
   bornAt: z.string().datetime(),
+  color: z.string(),
 });
 
 export const weightSchema = z.object({
@@ -42,6 +43,7 @@ export const dogSchema = z.object({
   chipId: z.string().optional(),
   photo: z.string().optional(),
   bornAt: z.string().date(),
+  color: z.string().optional(),
   owner: customerSchema.optional(),
   weights: z.array(weightSchema),
   poops: z.array(poopSchema),

@@ -6,6 +6,7 @@ import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
 import type z from 'zod';
 import {Button} from '@/components/ui/button';
+import {ColorPicker} from '@/components/ui/color-picker';
 import {DatePicker} from '@/components/ui/date-picker';
 import {
   Dialog,
@@ -35,6 +36,7 @@ export function AddDog() {
     resolver: zodResolver(dogFormSchema),
     defaultValues: {
       name: '',
+      color: '#6366f1'
     },
   });
 
@@ -75,6 +77,18 @@ export function AddDog() {
               <DialogHeader>
                 <DialogTitle>Add dog</DialogTitle>
               </DialogHeader>
+
+              <FormField
+                control={form.control}
+                name="color"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel className="text-right">Color</FormLabel>
+                    <ColorPicker color={field.value} {...field} />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <div className="grid grid-cols-2 gap-2 items-start">
                 <FormField

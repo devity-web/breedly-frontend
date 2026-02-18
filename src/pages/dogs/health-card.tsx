@@ -58,7 +58,7 @@ export function HealthCard({healths, dogId}: HealthCardProps) {
 
   const {mutate, isPending} = dogsClient.addHealth.useMutation({
     onSuccess: () => {
-      toast('Health successfully addded ✅');
+      toast.success('Health successfully addded');
       queryClient.invalidateQueries({
         queryKey: dogsKeys.getById(dogId).queryKey,
       });

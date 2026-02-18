@@ -64,7 +64,7 @@ export function WeightCard({weights, dogId}: WeightCardProps) {
 
   const {mutate, isPending} = dogsClient.addWeight.useMutation({
     onSuccess: () => {
-      toast('Weight successfully addded ✅');
+      toast.success('Weight successfully addded');
       queryClient.invalidateQueries({
         queryKey: dogsKeys.getById(dogId).queryKey,
       });

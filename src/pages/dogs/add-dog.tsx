@@ -42,7 +42,7 @@ export function AddDog() {
 
   const {mutate, isPending} = dogsClient.createDog.useMutation({
     onSuccess: () => {
-      toast('Dog successfully created ✅');
+      toast.success('Dog successfully created');
       queryClient.invalidateQueries({
         queryKey: dogsKeys.getAll.queryKey,
       });

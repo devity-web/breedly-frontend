@@ -43,7 +43,7 @@ export const EditDog = ({dogId}: {dogId: string}) => {
 
   const {mutate, isPending} = dogsClient.updateDog.useMutation({
     onSuccess: () => {
-      toast('Identity successfully updated ✅');
+      toast.success('Identity successfully updated');
       queryClient.invalidateQueries({
         queryKey: dogsKeys.getById(dogId).queryKey,
       });

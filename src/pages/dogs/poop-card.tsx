@@ -26,7 +26,7 @@ export function PoopCard({poops, dogId}: PoopCardProps) {
 
   const {mutate, isPending} = dogsClient.addPoop.useMutation({
     onSuccess: () => {
-      toast('Poop successfully registered ✅');
+      toast.success('Poop successfully registered');
       queryClient.invalidateQueries({
         queryKey: dogsKeys.getById(dogId).queryKey,
       });

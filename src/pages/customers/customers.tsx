@@ -1,5 +1,6 @@
 import {useNavigate} from '@tanstack/react-router';
 import {format} from 'date-fns';
+import {PageName} from '@/components/page-name';
 import {Card, CardContent} from '@/components/ui/card';
 import {Input} from '@/components/ui/input';
 import {
@@ -24,6 +25,7 @@ export const Customers = () => {
 
   return (
     <div>
+      <PageName name="Customers" />
       <div className="flex items-center justify-between mb-4">
         <Input className="w-64" placeholder="Search for customers" />
         {/* <AddDog /> */}

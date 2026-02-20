@@ -8,7 +8,7 @@ import {
   dashboardKeys,
 } from '@/server/dashboard/dashboard.client';
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/_authenticated/')({
   component: Index,
 });
 
@@ -28,15 +28,15 @@ function Index() {
               <StatsCard title="Dogs" value={data.body.dogs} icon={IconDog} />
               <StatsCard
                 title="Customers"
-                value={data.body.dogs}
+                value={data.body.customers}
                 icon={IconUsers}
               />
               <StatsCard
                 title="Photos"
-                value={data.body.dogs}
+                value={data.body.photos}
                 icon={IconCamera}
               />
-              <StatsCard title="Poops" value={data.body.dogs} icon={IconPoo} />
+              <StatsCard title="Poops" value={data.body.poops} icon={IconPoo} />
             </div>
           )}
         </div>

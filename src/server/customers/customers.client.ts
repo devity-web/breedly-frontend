@@ -5,7 +5,7 @@ import {customersContract} from './customers.contract';
 
 export const customersClient = initQueryClient(customersContract, {
   baseUrl: `${getBaseUrl()}/customers`,
-  baseHeaders: {},
+  credentials: 'include',
 });
 
 export const customersKeys = createQueryKeys('customers', {

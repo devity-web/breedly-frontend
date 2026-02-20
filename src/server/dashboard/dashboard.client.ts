@@ -5,7 +5,7 @@ import {dashboardContract} from './dashboard.contract';
 
 export const dashboardClient = initQueryClient(dashboardContract, {
   baseUrl: `${getBaseUrl()}/dashboard`,
-  baseHeaders: {},
+  credentials: 'include',
 });
 
 export const dashboardKeys = createQueryKeys('dashboard', {

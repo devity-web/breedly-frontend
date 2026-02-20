@@ -5,7 +5,7 @@ import {dogsContract} from './dogs.contract';
 
 export const dogsClient = initQueryClient(dogsContract, {
   baseUrl: `${getBaseUrl()}/dogs`,
-  baseHeaders: {},
+  credentials: 'include',
 });
 
 export const dogsKeys = createQueryKeys('dogs', {

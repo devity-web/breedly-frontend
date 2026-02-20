@@ -1,7 +1,7 @@
 import {createFileRoute} from '@tanstack/react-router';
 import {EditDog} from '@/pages/dogs/edit-dog';
 
-export const Route = createFileRoute('/dogs/$dogId')({
+export const Route = createFileRoute('/_authenticated/dogs/$dogId')({
   component: RouteComponent,
 });
 

@@ -1,6 +1,7 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import {IconBrandAppleFilled, IconBrandGoogleFilled} from '@tabler/icons-react';
 import {useNavigate, useSearch} from '@tanstack/react-router';
+import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {toast} from 'sonner';
 import z from 'zod';
@@ -38,6 +39,7 @@ export function LoginForm({className, ...props}: React.ComponentProps<'div'>) {
   const auth = useAuth();
   const navigate = useNavigate();
   const {redirect} = useSearch({strict: false});
+  const [loadingGoogle, setLoadingGoogle] = useState(false);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -58,9 +60,12 @@ export function LoginForm({className, ...props}: React.ComponentProps<'div'>) {
 
   const loginGoogle = async () => {
     try {
+      setLoadingGoogle(true);
       await auth.loginSocial(redirect);
     } catch {
       toast.error('Invalid email or password. Please try again.');
+    } finally {
+      setLoadingGoogle(false);
     }
   };
 
@@ -80,7 +85,12 @@ export function LoginForm({className, ...props}: React.ComponentProps<'div'>) {
                 <IconBrandAppleFilled />
                 Login with Apple
               </Button>
-              <Button onClick={loginGoogle} variant="outline" type="button">
+              <Button
+                isLoading={loadingGoogle}
+                onClick={loginGoogle}
+                variant="outline"
+                type="button"
+              >
                 <IconBrandGoogleFilled />
                 Login with Google
               </Button>

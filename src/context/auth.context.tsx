@@ -1,6 +1,7 @@
 import type React from 'react';
 import {createContext, useContext, useEffect, useState} from 'react';
 import {authClient} from '@/lib/auth';
+import {getCallbackUrl} from '@/utils/get-callback-url';
 
 interface Session {
   user: {
@@ -32,6 +33,7 @@ interface LoginData {
 export interface AuthContext {
   isAuthenticated: boolean;
   login: (data: LoginData) => Promise<void>;
+  loginSocial: (redirect: string) => Promise<void>;
   logout: () => Promise<void>;
   session: Session | null;
 }
@@ -52,6 +54,17 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
     await refetch();
   };
 
+  const loginSocial = async (redirect: string) => {
+    const result = await authClient.signIn.social({
+      provider: 'google',
+      callbackURL: `${getCallbackUrl()}${redirect ?? '/'}`,
+    });
+
+    if (result.error) {
+      throw new Error('Failed to login');
+    }
+  };
+
   const logout = async () => {
     await authClient.signOut();
     // await refetch();
@@ -63,7 +76,7 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
 
   return (
     <AuthContext.Provider
-      value={{isAuthenticated: !!data, login, session, logout}}
+      value={{isAuthenticated: !!data, login, session, logout, loginSocial}}
     >
       {!isPending && children}
     </AuthContext.Provider>

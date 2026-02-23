@@ -151,10 +151,10 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              className="p-1.5!"
             >
               <Link to="/">
-                <IconBone className="!size-5" />
+                <IconBone className="size-5!" />
                 <span className="text-base font-semibold">Breedly</span>
               </Link>
             </SidebarMenuButton>

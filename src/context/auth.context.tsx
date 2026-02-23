@@ -1,5 +1,6 @@
 import type React from 'react';
 import {createContext, useContext, useEffect, useState} from 'react';
+import {LoadingScreen} from '@/components/loading-screen';
 import {authClient} from '@/lib/auth';
 import {getCallbackUrl} from '@/utils/get-callback-url';
 
@@ -67,7 +68,7 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
 
   const logout = async () => {
     await authClient.signOut();
-    // await refetch();
+    await refetch();
   };
 
   useEffect(() => {
@@ -78,7 +79,7 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
     <AuthContext.Provider
       value={{isAuthenticated: !!data, login, session, logout, loginSocial}}
     >
-      {!isPending && children}
+      {!isPending ? children : <LoadingScreen />}
     </AuthContext.Provider>
   );
 }

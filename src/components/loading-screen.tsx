@@ -51,7 +51,7 @@ export function LoadingScreen() {
           <Spinner />
           <div className="flex flex-col items-center gap-2">
             <h1 className="text-xl font-semibold tracking-tight text-foreground text-balance">
-              Breedly
+              Breedly Inc.
             </h1>
             <LoadingStatus />
           </div>
